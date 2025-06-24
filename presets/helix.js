@@ -142,7 +142,7 @@ module.exports = {
 		
 		// match mode
 		m: {
-			m: "editor.action.jumpToBracket"
+			m: "modalEditor.jumpToBracket"
 		},
 
 		// goto mode
