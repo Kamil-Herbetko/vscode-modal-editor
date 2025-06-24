@@ -658,6 +658,49 @@ export async function onConfigUpdate() {
 	}
 }
 
+/**
+ * Jump to matching bracket - Helix-style behavior
+ * In selection mode, uses the cursor position (active) instead of selection start
+ */
+async function jumpToBracket() {
+	const editor = vscode.window.activeTextEditor;
+	if (!editor) return;
+
+	const isInSelectMode = appState.mode === SELECT;
+
+	if (isInSelectMode && !editor.selection.isEmpty) {
+		// In selection mode with active selection
+		const originalSelections = editor.selections;
+		const newSelections: vscode.Selection[] = [];
+
+		// Process each selection
+		for (const sel of originalSelections) {
+			// Save the anchor position
+			const anchor = sel.anchor;
+			const active = sel.active;
+
+			// Temporarily place cursor at the active position (where cursor is shown)
+			await editor.edit(() => {}, {undoStopBefore: false, undoStopAfter: false});
+			editor.selection = new vscode.Selection(active, active);
+
+			// Execute jump to bracket from the active position
+			await vscode.commands.executeCommand("editor.action.jumpToBracket");
+
+			// Get the new position after jump
+			const newPos = editor.selection.active;
+
+			// Create selection from original anchor to new position
+			newSelections.push(new vscode.Selection(anchor, newPos));
+		}
+
+		// Apply all new selections
+		editor.selections = newSelections;
+	} else {
+		// In normal mode or no selection: use default behavior
+		await vscode.commands.executeCommand("editor.action.jumpToBracket");
+	}
+}
+
 function registerCommand(command: (_: any) => any, name?: string) {
 	return vscode.commands.registerCommand(commandId(name ?? command), command);
 }
@@ -690,6 +733,7 @@ export async function register(context: vscode.ExtensionContext, outputChannel: 
 		registerCommand(resetState),
 		registerCommand(importKeybindings),
 		registerCommand(importPreset),
+		registerCommand(jumpToBracket),
 		// Handle type events
 		vscode.commands.registerCommand("type", onType)
 	);

@@ -115,6 +115,7 @@ They are listed as follows:
 | `modalEditor.resetState` | - | Reset internal state |
 | `modalEditor.importKeybindings` | - | Import keybindings |
 | `modalEditor.importPreset` | `string?` | Import keybindings from preset dir or a specified dir |
+| `modalEditor.jumpToBracket` | - | Jump to matching bracket (Helix-style: uses cursor position in selection mode) |
 
 
 Types defined in the above table:
