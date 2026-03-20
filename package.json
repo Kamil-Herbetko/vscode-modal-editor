@@ -82,6 +82,10 @@
       {
         "command": "modalEditor.clearSelections",
         "title": "Modal Editor: Clear existing selections but keep all cursors"
+      },
+      {
+        "command": "modalEditor.jumpToBracket",
+        "title": "Modal Editor: Jump to matching bracket (Helix-style)"
       }
     ],
     "keybindings": [
