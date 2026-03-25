@@ -70,6 +70,8 @@ export type Misc = {
 	clearSelectionsOnInsertMode: boolean,
   /// Parse leading number as prefix instead of normal keys
   parseNumberPrefix: boolean,
+	/// Timeout in milliseconds for insert-mode keybinding sequences
+	insertKeybindingTimeout: number,
 };
 
 /**
@@ -110,6 +112,7 @@ const defaultMisc: Misc = {
 	defaultMode: NORMAL,
 	clearSelectionsOnInsertMode: true,
   parseNumberPrefix: true,
+	insertKeybindingTimeout: 200,
 };
 
 export function getStyle(mode: string, styles: Styles) {
@@ -203,4 +206,3 @@ export async function readConfig() {
 		misc
 	} as Config;
 }
-

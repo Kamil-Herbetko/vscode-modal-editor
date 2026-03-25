@@ -204,6 +204,8 @@ For insert mode, keybindings are primarily useful for transition sequences
 (for example `jj` / `kk` to switch to normal mode).
 Characters are inserted first, and when a configured insert-mode sequence matches,
 the matched characters are removed and the mapped command is executed.
+By default, insert-mode sequence matching times out after `200ms`
+(configurable via `modalEditor.misc.insertKeybindingTimeout`).
 
 Each key sequence can be prefixed with a number indicating the count.
 The count value will be stored in the `CommandContext`,

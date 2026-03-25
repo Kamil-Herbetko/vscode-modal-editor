@@ -98,6 +98,8 @@ export class AppState {
 	insertCurrentKeymap: Keymap | undefined;
 	/// Buffered insert-mode keys while parsing key sequences
 	insertKeys: string;
+	/// Timeout used for insert-mode key sequence matching
+	insertKeyTimer: NodeJS.Timeout | undefined;
 
 	constructor(
 		mode: string,
@@ -111,6 +113,7 @@ export class AppState {
 		this.anchors = [];
 		this.insertCurrentKeymap = undefined;
 		this.insertKeys = "";
+		this.insertKeyTimer = undefined;
 		this.setMode(mode);
 	}
 
@@ -126,8 +129,27 @@ export class AppState {
 	}
 
 	resetInsertKeys() {
+		if (this.insertKeyTimer) {
+			clearTimeout(this.insertKeyTimer);
+			this.insertKeyTimer = undefined;
+		}
 		this.insertCurrentKeymap = this.config.keybindings[INSERT];
 		this.insertKeys = "";
+	}
+
+	setInsertKeyTimeout() {
+		if (this.insertKeyTimer) {
+			clearTimeout(this.insertKeyTimer);
+		}
+
+		const timeout = this.config.misc.insertKeybindingTimeout;
+		if (timeout <= 0) {
+			return;
+		}
+
+		this.insertKeyTimer = setTimeout(() => {
+			this.resetInsertKeys();
+		}, timeout);
 	}
 
 	async undoTypedText(length: number) {
@@ -148,7 +170,6 @@ export class AppState {
 			return;
 		}
 
-		const previousKeys = this.insertKeys;
 		let value = this.getFromKeymap(this.insertCurrentKeymap, key);
 		if (value) {
 			this.insertKeys += key;
@@ -160,6 +181,7 @@ export class AppState {
 			}
 			else {
 				this.insertCurrentKeymap = value;
+				this.setInsertKeyTimeout();
 			}
 			return;
 		}
@@ -180,10 +202,7 @@ export class AppState {
 		}
 		else {
 			this.insertCurrentKeymap = value;
-			// previous keys are regular text now, so only keep the latest key.
-			if (previousKeys.length > 0) {
-				this.insertKeys = key;
-			}
+			this.setInsertKeyTimeout();
 		}
 	}
 
