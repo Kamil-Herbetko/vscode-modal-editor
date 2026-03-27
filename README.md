@@ -33,14 +33,17 @@ Install it manually into VSCode and reload the window.
 
 To use this extension, first you need to import keybindings.
 You can define your own keybindings based on the tutorial.
-Or you can use the preset in this repository as a start point.
+Or you can use one of the presets in this repository as a start point.
 
 You can put different keybindings in the preset directory (default is `~/.config/vscode-modal-editor`),
 so that you can switch between them quickly.
 
-To get started, you may want to try the helix preset provided in this repo.
-To load it, import the preset using URI directly:
-<https://raw.githubusercontent.com/DCsunset/vscode-modal-editor/main/presets/helix.js>
+To get started, you can import one of these presets using URI directly:
+
+- Helix: <https://raw.githubusercontent.com/DCsunset/vscode-modal-editor/main/presets/helix.js>
+- Vim: <https://raw.githubusercontent.com/DCsunset/vscode-modal-editor/main/presets/vim.js>
+- Neovim: <https://raw.githubusercontent.com/DCsunset/vscode-modal-editor/main/presets/neovim.js>
+- Kakoune: <https://raw.githubusercontent.com/DCsunset/vscode-modal-editor/main/presets/kakoune.js>
 
 
 ## Features
@@ -71,15 +74,17 @@ To add keybindings, you can create a config file in `json`, `jsonc`, or `js` for
 To import existing keybindings, run the command "Modal Editor: Import Keybindings" from the command palette.
 You can select a file or use a URI.
 
-There is a preset for helix in this repository.
-It is just a demo and you can easily create your own based on it.
+There are presets for helix, vim, neovim, and kakoune in this repository.
+They are demos and you can easily create your own based on them.
 
 
 ## Presets
 
 The design of this extension mainly follows [helix](https://github.com/helix-editor/helix),
-so I create a preliminary [preset](./presets/helix.js) for it.
-It doesn't implement all helix features and some actions may have slight differences.
+so there is a preliminary [helix preset](./presets/helix.js) for it.
+There are also basic presets for [vim](./presets/vim.js), [neovim](./presets/neovim.js),
+and [kakoune](./presets/kakoune.js).
+These presets do not implement all editor-specific features and some actions may have slight differences.
 
 You are encouraged to define your own keybindings
 since this extension aims at a general modal editor.
